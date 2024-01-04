@@ -15,7 +15,7 @@ app.use('/api', apiRoutes);
 app.use('/bookingService/api', apiRoutes);
 
 app.get('/callingPythonservice', async (req, res) => {
-    const response = await axios.get('https://flights_service:3000/api/v1/info');
+    const response = await axios.get('https://flights-service:3000/api/v1/info');
     console.log(response)
     return res.json({message: response.data});
 })

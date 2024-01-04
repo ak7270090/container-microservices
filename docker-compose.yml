@@ -7,39 +7,42 @@ volumes:
   booking-service-node-modules:
   flights-service-node-modules:
 services:
-  api_gateway:
+  api-gateway:
     build: ./API-Gateway
+    image: ak7270090/containerised-docker-microservices-api_gateway
     networks:
       - micro-net
     ports:
       - "3001:3001"
-    volumes:
-      - ./API-Gateway:/developer/nodejs/api-gateway
-      - api-gateway-node-modules:/developer/nodejs/api-gateway/node_modules
-  python_service:
+    labels:
+      kompose.service.type: LoadBalancer
+  python-service:
     build: ./python-project
+    image: ak7270090/containerised-docker-microservices-python_service
     networks:
       - micro-net
     ports:
       - "3005:3005"
-  flights_service:
+    labels:
+      kompose.service.type: LoadBalancer
+  flights-service:
     build: ./Flights
+    image: ak7270090/containerised-docker-microservices-flights_service
     networks:
       - micro-net
     ports: 
       - "3000:3000"
-    volumes:
-      - ./Flights:/developer/nodejs/flights_service
-      - flights-service-node-modules:/developer/nodejs/flights-service/node_modules
-  booking_service:
+    labels:
+      kompose.service.type: LoadBalancer
+  booking-service:
     build: ./Flights-Booking-Service
+    image: ak7270090/containerised-docker-microservices-booking_service
     networks:
       - micro-net
     ports:
       - "4000:4000"
-    volumes:
-      - ./Flights-Booking-Service:/developer/nodejs/booking_service
-      - booking-service-node-modules:/developer/nodejs/booking-service/node_modules
+    labels:
+      kompose.service.type: LoadBalancer
     
 # docker compose up -d // run all containers in detached mode kind of like -dit
 
@@ -48,7 +51,3 @@ services:
 # docker run -dit --init --name api_gateway1 --network microservice-network -p 3001:3001 -v "$(pwd)":/developer/nodejs/api-gateway -v api-gateway-node-modules:/developer/nodejs/api-gateway/node_modules api-gateway:latest 
 # docker run -it --init --name flights_service --network microservice-network  -p 3000:3000 -v "$(pwd)":/developer/nodejs/flights-service -v flights-service-node-modules:/developer/nodejs/flights-service/node_modules flights-service:latest
 #  docker run -it --init --name booking_service --network microservice-network  -p 4000:4000 -v "$(pwd)":/developer/nodejs/booking-service -v booking-service-node-modules:/developer/nodejs/booking-service/node_modules booking-service:latest
-
-
-#docker system prune -a
-#docker compose down
